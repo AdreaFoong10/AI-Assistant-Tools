@@ -1,38 +1,71 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Gemini Test</title>
+    <title>Gemini AI Writing Assistance</title>
 </head>
 <style>
 input, textarea {
   field-sizing: content;
-  min-width: 200px;
-  min-height: 5px;
+  min-width: 400px;
+}
+
+h1{
+    display: flex;
+    justify-content: center;
+}
+
+div, pre{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 22px;
 }
 </style>
 <body>
-    <h1>Ask Gemini</h1>
+    <h1>Gemini AI Writing Assistance</h1>
 
-    <input type="text" id="prompt" placeholder="Enter your prompt"/>
-    <button onclick="sendPrompt()">Send</button>
+    <div>
+        <select id="tool">
+            <option value="resume">Resume Enhancer</option>
+            <option value="email">Email Generator</option>
+            <option value="blog">Blog Title Generator</option>
+            <option value="study">Study Notes</option>
+            <option value="malaysian-gibberish">Malaysian Gibberish</option>
+        </select>
+    </div>
 
+    <div>
+        <textarea id="prompt" rows="3" placeholder="Enter your prompt..."></textarea>
+    </div>
+    <div>
+        <button onclick="sendPrompt()">Generate</button>
+    </div>
+
+    <pre id="inputs"></pre>
     <pre id="result"></pre>
 
     <script>
         async function sendPrompt(){
             const input = document.getElementById('prompt').value;
+            const tool = document.getElementById('tool').value;
 
             const res = await fetch("/generate", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({prompt : input})
+                body: JSON.stringify({prompt : input, tool: tool})
             });
 
             const data = await res.json();
-            document.getElementById('result').innerHTML = "Output :" + data.text;
+
+            if(!data.sucess){
+                document.getElementById('inputs').innerHTML = "Error : "+ data.text_error;
+            } else {
+                document.getElementById('result').innerHTML = data.text_output;
+            }
         }
+
     </script>
 </body>
 </html>
