@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gemini Test</title>
+</head>
+<style>
+input, textarea {
+  field-sizing: content;
+  min-width: 200px;
+  min-height: 5px;
+}
+</style>
+<body>
+    <h1>Ask Gemini</h1>
+
+    <input type="text" id="prompt" placeholder="Enter your prompt"/>
+    <button onclick="sendPrompt()">Send</button>
+
+    <pre id="result"></pre>
+
+    <script>
+        async function sendPrompt(){
+            const input = document.getElementById('prompt').value;
+
+            const res = await fetch("/generate", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({prompt : input})
+            });
+
+            const data = await res.json();
+            document.getElementById('result').innerHTML = "Output :" + data.text;
+        }
+    </script>
+</body>
+</html>
