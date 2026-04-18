@@ -1,0 +1,16 @@
+input, textarea {
+  field-sizing: content;
+  min-width: 400px;
+}
+
+h1{
+    display: flex;
+    justify-content: center;
+}
+
+div, pre{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 22px;
+}

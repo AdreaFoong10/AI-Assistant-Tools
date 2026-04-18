@@ -1,7 +1,9 @@
 import express from "express";
 import path from "path";
-import { generateText } from "./gemini-pro";
-import { buildPrompt } from "./prompt-generation";
+import { genimiGenerateText } from "./services/gemini-pro";
+import { buildPrompt } from "./utils/prompt-generation";
+import { openRouterGenerateText } from "./services/openrouter";
+import { addToHistory, getHistory, clearHistory } from "./services/chat-history";
 
 const app = express();
 
@@ -11,7 +13,7 @@ app.use(express.static(path.join(__dirname, "../public")));
 
 app.post("/generate", async (req, res) => {
     try{
-        const {prompt, tool} = req.body;
+        const {prompt, tool, provider, sessionId} = req.body;
 
         if(!prompt){
             return res.status(400).json({ error : "You did not enter a prompt."});
@@ -19,9 +21,25 @@ app.post("/generate", async (req, res) => {
 
         const finalPrompt = buildPrompt(tool, prompt);
 
-        const output = await generateText(finalPrompt);
+        let output: string;
+        console.log(provider);
+        console.log(finalPrompt)
 
-        res.json({sucess: true, text_input: finalPrompt, text_output: output});
+        if(provider === 'openrouter'){
+            output = await openRouterGenerateText(finalPrompt);
+        } else if (provider === 'gemini'){
+            output = await genimiGenerateText(finalPrompt);
+        } else {
+            return res.status(400).json({
+                success: false,
+                text_error: "Invalid AI provider selected."
+            });
+        }
+
+        console.log(output);
+        addToHistory(sessionId, prompt, output);
+
+        res.json({success: true, text_input: finalPrompt, text_output: output});
     } catch(error: any){
         console.log(error);
         const message =
@@ -35,18 +53,60 @@ app.post("/generate", async (req, res) => {
                 text_error: "The AI model is currently busy due to high traffic. Please try again in a few seconds."
             });
         } 
-        
-        if (message.include("You exceeded your current quota, please check your plan and billing details.")){
-            return res.status(503).json({
+
+        return res.status(400).json({
+            success: false,
+            text_error: "Model Error: Something went wrong. Please try again."
+        });
+    }
+});
+
+app.get("/history/:sessionId", async (req, res) => {
+    try{
+        const sessionId = req.params.sessionId;
+
+        const history = getHistory(sessionId);
+
+        if (!sessionId || sessionId === "undefined") {
+            return res.status(400).json({
                 success: false,
-                text_error: "You have exceeded your current quota. Please check your plan and billing details."
+                message: "Missing sessionId"
             });
         }
 
+        if(!history || history.length === 0){
+            return res.status(400).json({ success: false, text_error : "You do not have any History."});
+        }
+
+        res.json({
+            success: true,
+            history: history
+        });
+    } catch(error: any){
+        console.log(error);
+
         return res.status(500).json({
             success: false,
-            text_error: "Gemini Error: Something went wrong. Please try again.",
-            error: error
+            text_error: "Something went wrong while retrieving History : <br>" + error
+        });
+    }
+});
+
+app.delete("/history/:sessionId", (req, res) => {
+    try {
+        const sessionId = req.params.sessionId;
+
+        clearHistory(sessionId);
+
+        res.json({
+            success: true,
+            message: "History cleared"
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Failed to clear history"
         });
     }
 });

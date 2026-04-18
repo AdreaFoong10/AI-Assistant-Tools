@@ -1,28 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Gemini AI Writing Assistance</title>
+    <title>AI Tool Assistance</title>
 </head>
-<style>
-input, textarea {
-  field-sizing: content;
-  min-width: 400px;
-}
-
-h1{
-    display: flex;
-    justify-content: center;
-}
-
-div, pre{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 22px;
-}
-</style>
+<link rel="stylesheet" href="./css/index-css.css">
 <body>
-    <h1>Gemini AI Writing Assistance</h1>
+    <h1>AI Tool Assistance</h1>
+
+    <div>
+        <select id="provider">
+            <option value="gemini">Gemini</option>
+            <option value="openrouter">OpenRouter</option>
+        </select>
+    </div>
 
     <div>
         <select id="tool">
@@ -38,34 +28,17 @@ div, pre{
         <textarea id="prompt" rows="3" placeholder="Enter your prompt..."></textarea>
     </div>
     <div>
-        <button onclick="sendPrompt()">Generate</button>
+        <button id="generateBtn">Generate</button>
+    </div>
+    <div>
+        <button id="historyBtn">See History</button>
+    </div>
+    <div>
+        <button id="clearBtn">Clear History</button>
     </div>
 
-    <pre id="inputs"></pre>
     <pre id="result"></pre>
 
-    <script>
-        async function sendPrompt(){
-            const input = document.getElementById('prompt').value;
-            const tool = document.getElementById('tool').value;
-
-            const res = await fetch("/generate", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({prompt : input, tool: tool})
-            });
-
-            const data = await res.json();
-
-            if(!data.sucess){
-                document.getElementById('inputs').innerHTML = "Error : "+ data.text_error;
-            } else {
-                document.getElementById('result').innerHTML = data.text_output;
-            }
-        }
-
-    </script>
+    <script type="module" src="app.js"></script>
 </body>
 </html>
