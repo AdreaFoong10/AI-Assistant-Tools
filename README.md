@@ -10,7 +10,8 @@ A simple project using **Node.js + Express + TypeScript** integrated with **Goog
    `npm install`
 2. Create a .env.local file in the root directory
 3. Add your Gemini API key:
-4. API_KEY=your_gemini_api_key
+4. GEMINI_API_KEY=your_gemini_api_key
+5. OPENROUTER_API_KEY=your_openRouter_api_key
 
 ## How It Works
 
