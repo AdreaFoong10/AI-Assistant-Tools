@@ -17,11 +17,11 @@ A simple project using **Node.js + Express + TypeScript** integrated with **Goog
 
 1. User enters a prompt in the browser
 2. Frontend sends request to Express API
-3. Backend calls Gemini AI
+3. Backend calls AI API
 4. AI response is returned to frontend
 5. Result is displayed in the browser
 
-## How to Change Gemini AI Model
+## How to Change AI Model
 
 1. Open gemini-pro.ts
 2. Find:
