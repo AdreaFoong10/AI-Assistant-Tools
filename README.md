@@ -12,6 +12,7 @@ A simple project using **Node.js + Express + TypeScript** integrated with **Goog
 3. Add your Gemini API key:
 4. GEMINI_API_KEY=your_gemini_api_key
 5. OPENROUTER_API_KEY=your_openRouter_api_key
+6. Create dist and uploads folder in root directory
 
 ## How It Works
 
