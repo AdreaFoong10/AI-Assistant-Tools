@@ -1,6 +1,6 @@
 # Gemini AI Express Project
 
-A simple project using **Node.js + Express + TypeScript** integrated with **Google Gemini AI**, with simple frontend interface.
+A simple project using **Node.js + Express + TypeScript** integrated with **AI Models**, with simple frontend interface.
 
 ---
 
