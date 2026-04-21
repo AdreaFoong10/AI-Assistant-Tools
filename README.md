@@ -26,16 +26,6 @@ When running the project locally, two servers will be running:
 
 The frontend communicates with the backend through API requests (fetch), even though both are running on your local machine.
 
-## Architecture Flow
-
-Frontend (5173)
-↓ fetch()
-Backend API (3000)
-↓
-AI Model (Gemini / OpenRouter)
-↓
-Response returned to frontend
-
 ## How It Works
 
 1. User enters a prompt in the browser
