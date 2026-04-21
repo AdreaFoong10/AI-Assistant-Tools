@@ -1,4 +1,4 @@
-type Tool = "resume" | "email" | "blog" | "study";
+// type Tool = "resume" | "email" | "blog" | "study";
 
 export function buildPrompt(tool: string, input: string) {
     let BASE_PROMPT = `
