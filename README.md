@@ -11,9 +11,9 @@ A very simple project using **Node.js + Express + TypeScript** Backend Logic, **
    - command actions :
      - This will run `npm install` in root directory and in client folder
 2. Create a .env.local file in the root directory
-3. Add your Gemini API key:
-4. GEMINI_API_KEY=your_gemini_api_key
-5. OPENROUTER_API_KEY=your_openRouter_api_key
+3. Add your Gemini API key in .env.local file:
+    - GEMINI_API_KEY=your_gemini_api_key
+    - OPENROUTER_API_KEY=your_openRouter_api_key
 6. Run `npm run build` in root directory
 7. Create uploads folder in root directory
 
