@@ -1,4 +1,4 @@
-# Gemini AI Express Project
+# AI Assistant Tool Project
 
 A very simple project using **Node.js + Express + TypeScript** Backend Logic, **React + Vite** Frontend logic integrated with **AI API**
 
