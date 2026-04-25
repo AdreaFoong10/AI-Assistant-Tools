@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getSessionId } from "./utils/sessionUtils";
 
 import ProviderSelect from "./components/ProviderSelect";
@@ -17,10 +17,18 @@ export default function App() {
 
   const sessionId = getSessionId();
 
+  useEffect(() => {
+    if (tool === "rag") {
+      setProvider("gemini");
+    }
+  }, [tool]);
+
   async function sendPrompt() {
     const formData = new FormData();
 
-    formData.append("provider", provider);
+    const finalProvider = tool === "rag" ? "gemini" : provider;
+
+    formData.append("provider", finalProvider);
     formData.append("tool", tool);
     formData.append("prompt", prompt);
     formData.append("sessionId", sessionId);
@@ -68,7 +76,7 @@ export default function App() {
 
       <div className="row mb-3 justify-content-center">
         <div className="col-auto">
-          <ProviderSelect value={provider} onChange={setProvider} />
+          <ProviderSelect value={provider} onChange={setProvider} tool={tool}/>
         </div>
         <div className="col-auto">
           <ToolSelect value={tool} onChange={setTool} />

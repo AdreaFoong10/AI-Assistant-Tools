@@ -13,6 +13,7 @@ function ToolSelect({
       <option value="blog">Blog Title Generator</option>
       <option value="study">Study Notes</option>
       <option value="malaysian-gibberish">Malaysian Gibberish</option>
+      <option value="rag">Document Q&A (RAG)</option>
     </select>
   );
 }

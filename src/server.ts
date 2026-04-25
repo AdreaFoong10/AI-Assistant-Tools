@@ -5,7 +5,10 @@ import { buildPrompt, combinePromptWithFile } from "./utils/prompt-generation";
 import { openRouterGenerateText } from "./services/openrouter";
 import { addToHistory, getHistory, clearHistory } from "./services/chat-history";
 import multer from "multer";
-import { extractTextFromFile } from "./services/retrieval";
+import { extractTextFromFile } from "./services/file-retrieval";
+import { askRAG } from "./rag-server";
+import { processDocument } from "./rag/process-chunk-with-embedding";
+import { indexDocument } from "./rag/retrieval-vectorIndex-cosineSimilar";
 
 const upload = multer({ dest: "uploads/" });
 
@@ -72,6 +75,7 @@ app.post("/generate", upload.single("file"), async (req, res) => {
         let {prompt, tool, provider, sessionId} = req.body;
 
         let extractedText = "";
+        let tempRAGPrompt = prompt;
 
         if(!prompt){
             return res.status(400).json({ error : "You did not enter a prompt."});
@@ -82,23 +86,43 @@ app.post("/generate", upload.single("file"), async (req, res) => {
             prompt = await combinePromptWithFile(prompt, extractedText);
         }
 
-        console.log("prompt : "+ prompt);
+        // console.log("prompt : "+ prompt);
 
         const finalPrompt = buildPrompt(tool, prompt);
 
         let output: string;
-        console.log(provider);
-        console.log(finalPrompt)
+        // console.log(provider);
+        console.log("Tools selected : "+ tool);
+        console.log("user Prompt Input: "+ tempRAGPrompt);
+        console.log("Text extracted from text with addition prompt : "+ prompt);
+        console.log("Final Prompt : "+ finalPrompt);
 
-        if(provider === 'openrouter'){
-            output = await openRouterGenerateText(finalPrompt);
-        } else if (provider === 'gemini'){
-            output = await genimiGenerateText(finalPrompt);
+        if (tool === "rag") {
+            if (!req.file) {
+                return res.status(400).json({ error: "File required for RAG" });
+            }
+
+            if (req.file) {
+                const chunksWithEmbeddings = await processDocument(
+                    extractedText,
+                    req.file.filename
+                );
+
+                indexDocument(chunksWithEmbeddings);
+            }
+            
+            output = await askRAG(tempRAGPrompt);
         } else {
-            return res.status(400).json({
-                success: false,
-                text_error: "Invalid AI provider selected."
-            });
+            if(provider === 'openrouter'){
+                output = await openRouterGenerateText(finalPrompt);
+            } else if (provider === 'gemini'){
+                output = await genimiGenerateText(finalPrompt);
+            } else {
+                return res.status(400).json({
+                    success: false,
+                    text_error: "Invalid AI provider selected."
+                });
+            }
         }
 
         console.log(output);
