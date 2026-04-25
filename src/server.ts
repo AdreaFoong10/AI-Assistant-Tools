@@ -9,6 +9,7 @@ import { extractTextFromFile } from "./services/file-retrieval";
 import { askRAG } from "./rag-server";
 import { processDocument } from "./rag/process-chunk-with-embedding";
 import { indexDocument } from "./rag/retrieval-vectorIndex-cosineSimilar";
+// import fs from "fs";
 
 const upload = multer({ dest: "uploads/" });
 
@@ -127,6 +128,12 @@ app.post("/generate", upload.single("file"), async (req, res) => {
 
         console.log(output);
         addToHistory(sessionId, prompt, output);
+
+        // if (req.file) {
+        //     fs.unlink(req.file.path, (err) => {
+        //         if (err) console.error("File delete error:", err);
+        //     });
+        // }
 
         res.json({success: true, text_input: finalPrompt, text_output: output});
     } catch(error: any){
