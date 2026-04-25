@@ -1,4 +1,4 @@
-# AI Assistant Tool (RAG + Multi-LLM System)
+# AI Assistant Tool (RAG + Gemini / OpenRouter Integration)
 
 A full-stack AI Assistant project built using:
 
