@@ -3,15 +3,8 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 dotenv.config({ path: ".env.local" });
 
-const apiKey = process.env.GEMINI_API_KEY;
-
-if (!apiKey) {
-    throw new Error("Missing API_KEY in .env.local");
-}
-
-const genAI = new GoogleGenerativeAI(apiKey);
-
-export async function genimiGenerateText(prompt: string){
+export async function genimiGenerateText(apiKey: string, prompt: string){
+    const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ model : "gemini-2.5-flash"});
 
     const result = await model.generateContent(prompt);
