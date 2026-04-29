@@ -23,28 +23,20 @@ A full-stack AI Assistant project built using:
 ## Prerequisites
 
 ### 1. Install dependencies
-
-- npm install-all
+- Go to root directory
+- run 'npm install-all'
 
 This will:
 
-- Run `npm install` in the root directory
+- Run `npm install` in the `server/` folder
 - Run `npm install` in the `client/` folder
-
----
-
-### 2. Environment setup
-
-Create a `.env.local` file in the root directory:
-
-- GEMINI_API_KEY=your_gemini_api_key
-- OPENROUTER_API_KEY=your_openrouter_api_key
 
 ---
 
 ### 3. Build the project
 
-- npm run build
+- In root directory
+- run `npm run build`
 
 ---
 
