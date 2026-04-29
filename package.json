@@ -1,35 +1,52 @@
 {
-  "name": "web-with-node-express-typescript",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  },
   "scripts": {
-    "build": "tsc",
-    "start": "node ./dist/server.js",
-    "server": "tsc-watch --onSuccess \"node dist/server.js\"",
-    "client": "cd client && npm run dev",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "install-all": "npm install && cd client && npm install"
+    "dev": "concurrently \"cd server && npm run dev\" \"cd client && npm run dev\"",
+    "build:server": "cd server && npm run build",
+    "start:server": "cd server && npm run start",
+    "install-all": "npm install && cd server && npm install && cd ../client && npm install"
+  },
+  "name": "gemini-simple-website-chatbot",
+  "version": "1.0.0",
+  "description": "A full-stack AI Assistant project built using:",
+  "main": "index.js",
+  "dependencies": {
+    "ansi-regex": "^5.0.1",
+    "ansi-styles": "^4.3.0",
+    "chalk": "^4.1.2",
+    "cliui": "^8.0.1",
+    "color-convert": "^2.0.1",
+    "color-name": "^1.1.4",
+    "emoji-regex": "^8.0.0",
+    "escalade": "^3.2.0",
+    "get-caller-file": "^2.0.5",
+    "has-flag": "^4.0.0",
+    "is-fullwidth-code-point": "^3.0.0",
+    "require-directory": "^2.1.1",
+    "rxjs": "^7.8.2",
+    "shell-quote": "^1.8.3",
+    "string-width": "^4.2.3",
+    "strip-ansi": "^6.0.1",
+    "supports-color": "^8.1.1",
+    "tree-kill": "^1.2.2",
+    "tslib": "^2.8.1",
+    "wrap-ansi": "^7.0.0",
+    "y18n": "^5.0.8",
+    "yargs": "^17.7.2",
+    "yargs-parser": "^21.1.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdreaFoong10/AI-Assistant-Tool-Website-Chatbot.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
-  "devDependencies": {
-    "@tsconfig/node24": "^24.0.4",
-    "@types/express": "^5.0.6",
-    "@types/multer": "^2.1.0",
-    "@types/node": "^25.6.0",
-    "concurrently": "^9.2.1",
-    "tsc-watch": "^7.2.0",
-    "typescript": "^6.0.2"
+  "bugs": {
+    "url": "https://github.com/AdreaFoong10/AI-Assistant-Tool-Website-Chatbot/issues"
   },
-  "dependencies": {
-    "@google/generative-ai": "^0.24.1",
-    "dotenv": "^17.4.2",
-    "express": "^5.2.1",
-    "mammoth": "^1.12.0",
-    "multer": "^2.1.1",
-    "pdf-parse": "^2.4.5"
-  }
+  "homepage": "https://github.com/AdreaFoong10/AI-Assistant-Tool-Website-Chatbot#readme"
 }

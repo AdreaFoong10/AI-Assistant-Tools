@@ -1,7 +1,7 @@
 import { retrieveTopK } from "./rag/retrieval-vectorIndex-cosineSimilar";
 import { genimiGenerateText } from "./services/gemini-pro";
 
-export async function askRAG(query: string) {
+export async function askRAG(apiKey: string, query: string) {
     const chunks = await retrieveTopK(query, 3);
 
     const context = chunks
@@ -23,5 +23,5 @@ Question: ${query}
 
     console.log("Final RAG prompt:", prompt);
 
-    return await genimiGenerateText(prompt);
+    return await genimiGenerateText(apiKey, prompt);
 }

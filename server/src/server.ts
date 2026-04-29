@@ -74,6 +74,12 @@ app.post("/generate", upload.single("file"), async (req, res) => {
     try{
         console.log(req.body);
         let {prompt, tool, provider, sessionId} = req.body;
+        const apiKey = req.headers["x-api-key"] as string;
+        console.log("Received API Key in header: ", apiKey);
+
+        if (!apiKey) {
+            return res.status(400).json({ error: "Missing API key" });
+        }
 
         let extractedText = "";
         let tempRAGPrompt = prompt;
@@ -102,7 +108,7 @@ app.post("/generate", upload.single("file"), async (req, res) => {
             if (!req.file) {
                 return res.status(400).json({ error: "File required for RAG" });
             }
-
+            output = `[RAG Retrieval Results for "${req.file.originalname}"]\n\nI've indexed your document and found the most relevant sections. Based on my analysis, here is the answer to your query: "${prompt.slice(0, 50)}...". \n\n(In a full implementation, this would use a vector database and embeddings).`;
             if (req.file) {
                 const chunksWithEmbeddings = await processDocument(
                     extractedText,
@@ -112,12 +118,12 @@ app.post("/generate", upload.single("file"), async (req, res) => {
                 indexDocument(chunksWithEmbeddings);
             }
             
-            output = await askRAG(tempRAGPrompt);
+            output = await askRAG(apiKey, tempRAGPrompt);
         } else {
             if(provider === 'openrouter'){
-                output = await openRouterGenerateText(finalPrompt);
+                output = await openRouterGenerateText(apiKey, finalPrompt);
             } else if (provider === 'gemini'){
-                output = await genimiGenerateText(finalPrompt);
+                output = await genimiGenerateText(apiKey, finalPrompt);
             } else {
                 return res.status(400).json({
                     success: false,

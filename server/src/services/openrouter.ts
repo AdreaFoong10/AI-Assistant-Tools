@@ -2,9 +2,7 @@ import dotenv from "dotenv";
 
 dotenv.config({ path: ".env.local" });
 
-const apiKey = process.env.OPENROUTER_API_KEY;
-
-export async function openRouterGenerateText(prompt: string){
+export async function openRouterGenerateText(apiKey:string, prompt: string){
     const result = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
         headers: {
