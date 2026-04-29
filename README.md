@@ -24,7 +24,7 @@ A full-stack AI Assistant project built using:
 
 ### 1. Install dependencies
 - Go to root directory
-- run 'npm install-all'
+- run `npm install-all`
 
 This will:
 
