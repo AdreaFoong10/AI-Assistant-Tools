@@ -1,5 +1,8 @@
 node_modules
+client/node_modules
 .env
 .env.local
 dist/
 uploads/
+client/dist
+client/.vite

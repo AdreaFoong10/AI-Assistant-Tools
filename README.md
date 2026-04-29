@@ -1,37 +1,157 @@
-# Gemini AI Express Project
+# AI Assistant Tool (RAG + Gemini / OpenRouter Integration)
 
-A simple project using **Node.js + Express + TypeScript** integrated with **AI Models**, with simple frontend interface.
+A full-stack AI Assistant project built using:
+
+- Backend: Node.js + Express + TypeScript
+- Frontend: React + Vite
+- AI Integration: Gemini API + OpenRouter API
+- Features: Prompt handling, file upload, RAG (Retrieval-Augmented Generation), session history
+
+---
+
+## Features
+
+- AI provider support (Gemini / OpenRouter)
+- RAG-based document question answering
+- File upload + text extraction (Multer)
+- Embedding + cosine similarity retrieval
+- Session-based chat history
+- Simple full-stack architecture (React ↔ Express API)
 
 ---
 
 ## Prerequisites
 
-1. Install dependencies:
-   `npm install`
-2. Create a .env.local file in the root directory
-3. Add your Gemini API key:
-4. GEMINI_API_KEY=your_gemini_api_key
-5. OPENROUTER_API_KEY=your_openRouter_api_key
-6. Create dist and uploads folder in root directory
+### 1. Install dependencies
+
+- npm install-all
+
+This will:
+
+- Run `npm install` in the root directory
+- Run `npm install` in the `client/` folder
+
+---
+
+### 2. Environment setup
+
+Create a `.env.local` file in the root directory:
+
+- GEMINI_API_KEY=your_gemini_api_key
+- OPENROUTER_API_KEY=your_openrouter_api_key
+
+---
+
+### 3. Build the project
+
+- npm run build
+
+---
+
+### 4. Create required folder **[Currently redundent as files not used]**
+
+Create an `uploads/` folder in the root directory :
+
+- uploads/
+
+(This is required for temporary file storage during uploads)
+
+---
+
+## Local Development
+
+When running locally, two servers will be active:
+
+- Frontend (React + Vite): http://localhost:5173
+- Backend (Express API): http://localhost:3000
+
+The frontend communicates with the backend using REST API requests.
+
+---
 
 ## How It Works
 
-1. User enters a prompt in the browser
-2. Frontend sends request to Express API
-3. Backend calls AI API
-4. AI response is returned to frontend
-5. Result is displayed in the browser
+1. User enters a prompt in the UI
+2. Frontend sends request to backend (`/generate`)
+3. Backend processes request:
+   - Optional file upload handling
+   - RAG processing (if enabled)
+   - AI model selection (Gemini / OpenRouter)
+4. AI generates a response
+5. Backend returns result to frontend
+6. UI displays response and stores chat history
+
+---
+
+## RAG System (How It Works Internally)
+
+When a file is uploaded:
+
+1. File is read and text is extracted
+2. Text is split into chunks
+3. Each chunk is converted into embeddings
+4. Cosine similarity is used to find relevant chunks
+5. Top results are passed into the AI prompt
+6. AI generates a context-aware response
+
+---
 
 ## How to Change AI Model
 
-1. Open gemini-pro.ts
-2. Find:
-    genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
-3. Replace with supported models:
- - gemini-1.5-flash (fast, recommended)
- - gemini-1.5-pro (higher quality, slower)
+### Gemini
 
-## How to Run the Project
+Open:
 
-1. Run `npm run dev` in terminal
-2. Open http://localhost:3000
+- src/services/gemini-pro.ts
+
+Find:
+
+- model: "gemini-1.5-flash"
+
+Replace with a supported Gemini model.
+
+---
+
+### OpenRouter
+
+Open:
+
+- src/services/openrouter.ts
+
+Find:
+
+- model: "nvidia/nemotron-3-super-120b-a12b:free"
+
+Replace with a supported OpenRouter model.
+
+---
+
+## Run the Project
+
+Start development server:
+
+- npm run dev
+
+Then open:
+
+- http://localhost:5173/
+
+---
+
+## Notes
+
+- Uploaded files are stored temporarily in `uploads/`
+- Session history is stored in-memory (not persistent)
+
+---
+
+## Tech Stack
+
+- Node.js
+- Express
+- TypeScript
+- React
+- Vite
+- Multer
+- Embeddings + Cosine Similarity
+- Gemini API / OpenRouter API
